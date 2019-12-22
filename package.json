@@ -7,7 +7,7 @@
 	},
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "node_modules/.bin/mocha"
 	},
 	"repository": {
 		"type": "git",
@@ -18,5 +18,18 @@
 	"bugs": {
 		"url": "https://github.com/8uxa5/twine/issues"
 	},
-	"homepage": "https://github.com/8uxa5/twine#readme"
+	"homepage": "https://github.com/8uxa5/twine#readme",
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"dirty-chai": "^2.0.1",
+		"eslint": "^6.8.0",
+		"eslint-plugin-mocha": "^6.2.2",
+		"mocha": "^6.2.2",
+		"sinon": "^7.5.0"
+	},
+	"dependencies": {
+		"configstore": "^5.0.0",
+		"inquirer": "^7.0.1",
+		"keytar": "^5.0.0"
+	}
 }
