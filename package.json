@@ -1,0 +1,22 @@
+{
+	"name": "twine",
+	"version": "1.0.0",
+	"description": "A command line Twitter client (CLI)",
+	"bin": {
+		"twine": "./bin/twine.js"
+	},
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/8uxa5/twine.git"
+	},
+	"author": "8uxa5",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/8uxa5/twine/issues"
+	},
+	"homepage": "https://github.com/8uxa5/twine#readme"
+}
