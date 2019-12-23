@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const chai = require('chai');
 const expect = chai.expect;
 const dirtyChai = require('dirty-chai');
@@ -29,7 +29,7 @@ describe('the configure module', () => {
 		let [
 			key,
 			secret
-		] = await creds.getKeyAndSecret('apiKey');
+		] = await creds.getKeyAndSecret('consumer');
 		expect(key).to.equal('one');
 		expect(secret).to.equal('two');
 		expect(inquirer.prompt.calledOnce).to.be.true();
@@ -41,7 +41,7 @@ describe('the configure module', () => {
 		let [
 			key,
 			secret
-		] = await creds.getKeyAndSecret('apiKey');
+		] = await creds.getKeyAndSecret('consumer');
 		expect(key).to.equal('three');
 		expect(secret).to.equal('four');
 		expect(inquirer.prompt.calledOnce).to.be.true();
@@ -61,13 +61,13 @@ describe('the configure module', () => {
 		sinon.stub(Twitter.prototype, 'get').resolves({ screen_name: 'foo' });
 		sinon.stub(inquirer, 'prompt').onFirstCall().resolves({ continue: '' }).onSecondCall().resolves({ pin: '1234' });
 		sinon.stub(util, 'openBrowser').returns('');
-		sinon.spy(console, 'log');
+		sinon.stub(console, 'log');
 		await configure.account('twine-test');
 		CredentialManager.prototype.getKeyAndSecret.restore();
 		let [
 			token,
 			secret
-		] = await creds.getKeyAndSecret('accountToken');
+		] = await creds.getKeyAndSecret('account');
 		expect(token).to.equal('ghi');
 		expect(secret).to.equal('jkl');
 		expect(console.log.calledWith('Account "foo" successfully added!')).to.be.true();
@@ -77,7 +77,8 @@ describe('the configure module', () => {
 		sinon.restore();
 	});
 
-	after((done) => {
-		fs.unlink(path.join(process.env.HOME, '.config', 'configstore', 'twine-test.json'), done);
+	after(async () => {
+		await creds.clearAll();
+		await fs.unlink(path.join(process.env.HOME, '.config', 'configstore', 'twine-test.json'));
 	});
 });

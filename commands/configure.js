@@ -11,15 +11,15 @@ const configure = {
 			{ type: 'input', name: 'key', message: 'Enter your Twitter API Key:', validate: util.notEmpty },
 			{ type: 'password', name: 'secret', message: 'Enter your Twitter API Secret:', validate: util.notEmpty }
 		]);
-		await creds.storeKeyAndSecret('apiKey', answers.key, answers.secret);
+		await creds.storeKeyAndSecret('consumer', answers.key, answers.secret);
 	},
 	async account (name) {
 		let creds = new CredentialManager(name);
 		var [
-			apiKey,
+			consumer,
 			apiSecret
-		] = await creds.getKeyAndSecret('apiKey');
-		let twitter = new Twitter(apiKey, apiSecret);
+		] = await creds.getKeyAndSecret('consumer');
+		let twitter = new Twitter(consumer, apiSecret);
 		let response = querystring.parse(await twitter.post('oauth/request_token'));
 		twitter.setToken(response['oauth_token'], response['oauth_token_secret']);
 		await inquirer.prompt({
@@ -40,7 +40,7 @@ const configure = {
 		twitter.setToken(tokenResponse['oauth_token'], tokenResponse['oauth_token_secret']);
 
 		let verifyResponse = await twitter.get('1.1/account/verify_credentials.json');
-		await creds.storeKeyAndSecret('acountToken', tokenResponse['oauth_token'], tokenResponse['oauth_token_secret']);
+		await creds.storeKeyAndSecret('account', tokenResponse['oauth_token'], tokenResponse['oauth_token_secret']);
 		console.log(`Account "${verifyResponse['screen_name']}" successfully added!`);
 	}
 };
