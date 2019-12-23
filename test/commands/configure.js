@@ -14,18 +14,17 @@ chai.use(dirtyChai);
 
 describe('the configure module', () => {
 	var creds;
-	var sandbox;
 
 	before(() => {
 		creds = new CredentialManager('twine-test');
 	});
 
 	beforeEach(() => {
-		sandbox = sinon.sandbox.create();
+		sinon.createSandbox();
 	});
 
 	it('should add credentials then none are found', async () => {
-		sandbox.stub(inquirer, 'prompt').resolves({ key: 'one', secret: 'two' });
+		sinon.stub(inquirer, 'prompt').resolves({ key: 'one', secret: 'two' });
 		await configure.consumer('twine-test');
 		let [
 			key,
@@ -37,7 +36,7 @@ describe('the configure module', () => {
 	});
 
 	it('should overwrite existing credentials', async () => {
-		sandbox.stub(inquirer, 'prompt').resolves({ key: 'three', secret: 'four' });
+		sinon.stub(inquirer, 'prompt').resolves({ key: 'three', secret: 'four' });
 		await configure.consumer('twine-test');
 		let [
 			key,
@@ -49,20 +48,20 @@ describe('the configure module', () => {
 	});
 
 	it('should add an account', async () => {
-		sandbox.stub(CredentialManager.prototype, 'getKeyAndSecret').resolves([
+		sinon.stub(CredentialManager.prototype, 'getKeyAndSecret').resolves([
 			'key',
 			'secret'
 		]);
-		sandbox
+		sinon
 			.stub(Twitter.prototype, 'post')
 			.onFirstCall()
 			.resolves('oauth_token=abs&oauth_token_secret=def')
 			.onSecondCall()
 			.resolves('oauth_token=ghi&oauth_token_secret=jkl');
-		sandbox.stub(Twitter.prototype, 'get').resolves({ screen_name: 'foo' });
-		sandbox.stub(inquirer, 'prompt').onFirstCall().resolves({ continue: '' }).onSecondCall().resolves({ pin: '1234' });
-		sandbox.stub(util, 'openBrowser').returns('');
-		sandbox.spy(console, 'log');
+		sinon.stub(Twitter.prototype, 'get').resolves({ screen_name: 'foo' });
+		sinon.stub(inquirer, 'prompt').onFirstCall().resolves({ continue: '' }).onSecondCall().resolves({ pin: '1234' });
+		sinon.stub(util, 'openBrowser').returns('');
+		sinon.spy(console, 'log');
 		await configure.account('twine-test');
 		CredentialManager.prototype.getKeyAndSecret.restore();
 		let [
@@ -75,7 +74,7 @@ describe('the configure module', () => {
 	});
 
 	afterEach(() => {
-		sandbox.restore();
+		sinon.restore();
 	});
 
 	after((done) => {

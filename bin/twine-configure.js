@@ -8,6 +8,10 @@ program.command('consumer').description('Add a Twitter API key and secret').acti
 	await configure.consumer(pkg.name);
 });
 
+program.command('account').description('Authorize access to a Twitter account').action(async () => {
+	await configure.account(pkg.name);
+});
+
 program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
