@@ -39,7 +39,7 @@
 		"from2-array": "0.0.4",
 		"inquirer": "^7.0.1",
 		"keytar": "^5.0.0",
-		"lodash": "^4.17.15",
+		"lodash": "^4.17.21",
 		"oauth-1.0a": "^2.2.6",
 		"opn": "^6.0.0",
 		"parallel-transform": "^1.2.0",
